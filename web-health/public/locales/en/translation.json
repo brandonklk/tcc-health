@@ -1,0 +1,16 @@
+{
+  "email": "E-mail",
+  "password": "Senha",
+  "required": "Obrigatório",
+  "invalid_email": "E-mail inválido",
+  "button_close": "Fechar",
+  "button_success": "Salvar",
+  "name_folder": "Nome da Pasta",
+  "create_new_folder": "Criar nova pasta",
+  "new_folder": "Nova pasta",
+  "documents": "Documentos",
+  "add_new_document": "Adicionar novo documento",
+  "all_documents": "Todos os Documentos",
+  "dashborad": "Dashboard EN",
+  "enter": "Entrar"
+}

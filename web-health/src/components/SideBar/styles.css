@@ -1,0 +1,7 @@
+.menu-bar {
+  background-color: var(--primary-health-color);
+}
+
+.menu-bar .button-open-menu {
+  background-color: var(--primary-health-color);
+}
