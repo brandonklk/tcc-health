@@ -1,4 +1,4 @@
-import { encryptedPwd } from '../../src/utils/AuthUtils';
+import { encryptedPwd } from '@utils/AuthUtils';
 
 test('adds 1 + 2 to equal 3', async () => {
   const passwordString = '12345678';

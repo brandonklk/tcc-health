@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import connection from 'src/database/connection';
-import { IFileInsert } from 'src/interfaces';
-import { log } from 'src/logger/log';
+import connection from '@db/connection';
+import { IFileInsert } from '@interfaces/index';
+import { log } from '@logs/log';
 
 import { buildDateCurrent } from './DateUtils';
 

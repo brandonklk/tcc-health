@@ -1,90 +1,25 @@
 import { Request, Response } from 'express';
-import { keyUserLoggedIn } from 'src/constants';
+import { keyUserLoggedIn } from '@constante/index';
 
-import connection from 'src/database/connection';
-import { IUsers } from 'src/interfaces';
-import { saveCache, deleteCache } from 'src/modules/cache';
+import { IAuth } from '@interfaces/index';
+import { deleteCache } from '@modules/cache';
 
-import {
-  buildKeyUserLoggedInForCache,
-  comparePwd,
-  generateTokenOfAuthentication,
-} from 'src/utils/AuthUtils';
-import { buildMessageFeedback } from 'src/utils/MessageFeedback';
-
-const UserConnection = <T>() => connection<T>('users as u');
+import { buildKeyUserLoggedInForCache } from '@utils/AuthUtils';
+import { buildMessageFeedback } from '@utils/MessageFeedback';
+import { authService } from '@services/Auth/AuthServices';
 
 class AuthController {
   async authUser(req: Request, res: Response) {
-    const { email: mail, password: pwd } = req.body;
+    const { email: mail, password } = req.body;
 
-    const [user]: IUsers[] = await UserConnection<IUsers[]>()
-      .select('u.*', 'f.title_storage')
-      .where('u.email', '=', mail)
-      .leftJoin('files as f', 'u.avatar_id', 'f.files_id');
-
-    if (!user) {
-      return res.status(401).json(
-        buildMessageFeedback({
-          msg: 'E-mail ou senha não estão corretas.',
-          type: 'error',
-        }),
-      );
-    }
-
-    if (!user.email) {
-      return res.status(401).json(
-        buildMessageFeedback({
-          msg: 'E-mail ou senha não estão corretas.',
-          type: 'error',
-        }),
-      );
-    }
-
-    const passwordIsNotEquals = !(await comparePwd(pwd, user.password));
-
-    if (passwordIsNotEquals) {
-      return res.status(401).json(
-        buildMessageFeedback({
-          msg: 'E-mail ou senha não estão corretas.',
-          type: 'error',
-        }),
-      );
-    }
-
-    const {
-      avatar_id,
-      create_date,
-      email,
-      name,
-      user_id,
-      phone,
-      title_storage,
-    } = user;
-
-    const token = generateTokenOfAuthentication(user_id);
-
-    const valuesUser = {
-      userId: user_id,
-      phone,
-      avatarId: avatar_id,
-      create_date: new Date(create_date),
-      email,
-      name,
-      title_storage,
-      token,
+    const valueUserAuth: IAuth = {
+      email: mail || '',
+      password: password || '',
     };
 
-    saveCache(
-      buildKeyUserLoggedInForCache(user.user_id, keyUserLoggedIn),
-      valuesUser,
-    );
+    const userAuth = await authService(valueUserAuth, res);
 
-    return res.status(200).json({
-      msg: `Seja bem-vindo ${user.name}.`,
-      type: 'success',
-      user: valuesUser,
-    });
+    return userAuth;
   }
 
   async disconnectUser(req: Request, res: Response) {

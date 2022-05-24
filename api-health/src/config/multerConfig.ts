@@ -1,7 +1,7 @@
 import multer, { Options } from 'multer';
 import path from 'path';
 
-export default {
+export const configMulter = {
   storage: multer.diskStorage({
     destination: path.resolve(__dirname, '..', '..', 'files'),
     filename(request, file, callback) {

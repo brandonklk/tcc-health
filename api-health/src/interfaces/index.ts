@@ -8,12 +8,12 @@ export interface IFiles {
   title: string;
   title_storage: string;
   procedures_id?: number;
-  procedures?: IMedProcedures;
+  procedures?: IHealthProcedures;
   create_date?: Date;
 }
 
 export interface IUsers extends Partial<IFiles> {
-  user_id?: number;
+  userId?: number;
   name?: string;
   email?: string;
   password?: string;
@@ -21,10 +21,27 @@ export interface IUsers extends Partial<IFiles> {
   phone?: number;
   role?: string[];
   language?: 'pt' | 'en';
-  avatar_id?: number;
+  avatarId?: number;
+  avatar?: any;
 }
 
-export interface IMedProcedures extends Partial<IFiles> {
+export type INewUser = Pick<
+  IUsers,
+  | 'name'
+  | 'email'
+  | 'password'
+  | 'phone'
+  | 'avatarId'
+  | 'create_date'
+  | 'avatar'
+>;
+
+export type IEditUser = Pick<
+  IUsers,
+  'userId' | 'name' | 'email' | 'password' | 'phone' | 'avatar' | 'avatarId'
+>;
+
+export interface IHealthProcedures extends Partial<IFiles> {
   procedures_id?: number;
   title?: string;
   description?: string;
@@ -35,10 +52,15 @@ export interface IMedProcedures extends Partial<IFiles> {
   create_date?: Date;
 }
 
-export interface IDetailsProcedure extends IMedProcedures {
+export interface IDetailsProcedure extends IHealthProcedures {
   files: Partial<IFiles>[];
 }
 
 export interface IFileInsert extends Express.Multer.File {
   procedureId: number;
+}
+
+export interface IAuth {
+  email: string;
+  password: string;
 }

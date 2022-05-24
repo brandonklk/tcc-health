@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
-import routes from './routes/routes';
+import routes from './routes';
 import { celebrate, errors, Joi } from 'celebrate';
 import { log } from '@logs/log';
 import { valueDotEnvIsBoolean } from '@utils/EnvUtils';

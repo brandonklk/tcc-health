@@ -1,12 +1,12 @@
 import { Knex } from 'knex';
-import 'dotenv/config';
-import { IUsers } from 'src/interfaces';
+import { IUsers } from '@interfaces/index';
 
 export const seed = async (knex: Knex) => {
   // Deletes ALL existing entries
   await knex('users').del();
 
-  const password = process.env.PWD_USER;
+  const password =
+    '$2b$09$xHgeIFAi8YrodDxlrurQKuHNMeYY1Fq1Xreqr8W.aUE3F421aWJxa'; //process.env.PWD_USER;
 
   // Inserts seed entries
   await knex<IUsers[]>('users').insert([

@@ -2,35 +2,33 @@ import { Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import multer from 'multer';
 
-import connection from 'src/database/connection';
+import connection from '@db/connection';
 
-import { IDetailsProcedure, IFileInsert, IMedProcedures } from 'src/interfaces';
+import { IFileInsert, IHealthProcedures } from '@interfaces/index';
 
-import { buildMessageFeedback } from 'src/utils/MessageFeedback';
+import { buildMessageFeedback } from '@utils/MessageFeedback';
 
-import multerConfig from 'src/config/multer';
-import { log } from 'src/logger/log';
+import { configMulter } from '@config/multerConfig';
+import { log } from '@logs/log';
 
 import { buildDateCurrent } from '@utils/DateUtils';
 import { insertFile, insertFileAndGetIdFile } from '@utils/FilesUtils';
 
-import { getCache, hasCache, saveCache } from 'src/modules/cache';
+import { getCache, hasCache, saveCache } from '@modules/cache';
 import { generateUUId } from '@utils/Utils';
 
-const upload = multer(multerConfig);
+const upload = multer(configMulter);
 
-const MedProceduresConnection = () =>
-  connection<IMedProcedures>('health_procedures as hp');
+const HealthProceduresConnection = () =>
+  connection<IHealthProcedures>('health_procedures as hp');
 
-const MedProceduresCache = new NodeCache({ stdTTL: 0, checkperiod: 0 });
-
-class MedProcedures {
+class HealthProcedures {
   async getAllHealthProceduresUser(request: Request, response: Response) {
     const { userId: user_id } = request.params;
 
     const userId = Number(user_id);
 
-    const procedures = await MedProceduresConnection()
+    const procedures = await HealthProceduresConnection()
       .select(
         'hp.procedures_id',
         'hp.title',
@@ -43,16 +41,16 @@ class MedProcedures {
     return response.json(procedures);
   }
 
-  async saveMedProcedures(request: Request, response: Response) {
+  async saveHealthProcedures(request: Request, response: Response) {
     const { title, type_procedures, description, user_id } =
-      request.body as IMedProcedures;
+      request.body as IHealthProcedures;
 
     const create_date = buildDateCurrent();
     const uuIdProcedure = generateUUId();
 
     await connection.transaction(async trx => {
       try {
-        await MedProceduresConnection().transacting(trx).insert({
+        await HealthProceduresConnection().transacting(trx).insert({
           title,
           type_procedures,
           description,
@@ -78,8 +76,8 @@ class MedProcedures {
     let resultInsertFiles = { success: null };
 
     if (request.files && request.files.length > 0) {
-      const procedureId: Required<Pick<IMedProcedures, 'procedures_id'>> =
-        await MedProceduresConnection()
+      const procedureId: Required<Pick<IHealthProcedures, 'procedures_id'>> =
+        await HealthProceduresConnection()
           .select('hp.procedures_id')
           .where({ 'hp.procedures_uuid': uuIdProcedure })
           .first();
@@ -120,14 +118,14 @@ class MedProcedures {
     }
   }
 
-  async deleteMedProcedures(request: Request, response: Response) {
+  async deleteHealthProcedures(request: Request, response: Response) {
     const { procedureId: procedId } = request.params;
 
     const procedureId = Number(procedId);
 
     await connection.transaction(async trx => {
       try {
-        await MedProceduresConnection()
+        await HealthProceduresConnection()
           .transacting(trx)
           .where({ procedures_id: procedureId })
           .del();
@@ -159,7 +157,7 @@ class MedProcedures {
 
     let details: any[] = [];
 
-    const detailsProcedure = await MedProceduresConnection()
+    const detailsProcedure = await HealthProceduresConnection()
       .select(
         'hp.procedures_id',
         'hp.title as title_procedure',
@@ -205,7 +203,7 @@ class MedProcedures {
     return response.json(details[0]);
   }
 
-  async editMedProcedures(request: Request, response: Response) {
+  async editHealthProcedures(request: Request, response: Response) {
     const { procedureId, description, typeProcedures, title } = request.body;
 
     try {
@@ -226,7 +224,7 @@ class MedProcedures {
 
       await connection.transaction(async trx => {
         try {
-          await MedProceduresConnection()
+          await HealthProceduresConnection()
             .transacting(trx)
             .where({ procedures_id: procedureId })
             .update({
@@ -266,4 +264,4 @@ class MedProcedures {
   }
 }
 
-export { MedProcedures };
+export { HealthProcedures };
