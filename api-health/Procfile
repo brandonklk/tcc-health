@@ -1,1 +1,1 @@
-web: yarn knex:migrate && yarn knex:seeds && yarn build
+web: yarn build && yarn build:db && yarn start

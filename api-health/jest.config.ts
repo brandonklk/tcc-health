@@ -82,7 +82,7 @@ export default {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '@controllers/(.*)': ['../../../src/controllers/$1'],
+    '@controllers/(.*)': ['../../src/controllers/$1'],
     '@logs/(.*)': ['../../src/logger/$1'],
     '@db/(.*)': ['../../src/database/$1'],
     '@utils/(.*)': ['../../src/utils/$1'],

@@ -1,6 +1,6 @@
 import supertest from 'supertest';
-import server from '../../../../../src/server';
-import connectionDB from '../../../../../src/database/connection';
+import server from '../../../src/server';
+import connectionDB from '../../../src/database/connection';
 
 describe('controller of user', () => [
   beforeEach(async () => {
