@@ -9,7 +9,7 @@ export const seed = async (knex: Knex) => {
     '$2b$09$xHgeIFAi8YrodDxlrurQKuHNMeYY1Fq1Xreqr8W.aUE3F421aWJxa'; //process.env.PWD_USER;
 
   // Inserts seed entries
-  await knex<IUsers[]>('users').insert([
+  await knex('users').insert([
     {
       user_id: 1,
       name: 'Suporte',

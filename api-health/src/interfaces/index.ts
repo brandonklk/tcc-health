@@ -14,6 +14,7 @@ export interface IFiles {
 
 export interface IUsers extends Partial<IFiles> {
   userId?: number;
+  user_id?: number;
   name?: string;
   email?: string;
   password?: string;
@@ -22,6 +23,7 @@ export interface IUsers extends Partial<IFiles> {
   role?: string[];
   language?: 'pt' | 'en';
   avatarId?: number;
+  avatar_id?: number;
   avatar?: any;
 }
 
@@ -38,8 +40,23 @@ export type INewUser = Pick<
 
 export type IEditUser = Pick<
   IUsers,
-  'userId' | 'name' | 'email' | 'password' | 'phone' | 'avatar' | 'avatarId'
+  | 'userId'
+  | 'name'
+  | 'email'
+  | 'password'
+  | 'phone'
+  | 'avatar'
+  | 'avatarId'
+  | 'avatar_id'
+  | 'user_id'
 >;
+
+export type IDocumentHealth = {
+  documento_health_id: number;
+  procedures_id: number;
+  files_id: number;
+  create_date: Date;
+};
 
 export interface IHealthProcedures extends Partial<IFiles> {
   procedures_id?: number;
@@ -48,13 +65,13 @@ export interface IHealthProcedures extends Partial<IFiles> {
   type_procedures?: number;
   user_id?: number;
   user?: IUsers;
+  files?: Partial<IDocumentHealth>[];
+  files_multer?: Express.Multer.File[];
   procedures_uuid?: string;
   create_date?: Date;
 }
 
-export interface IDetailsProcedure extends IHealthProcedures {
-  files: Partial<IFiles>[];
-}
+export interface IDetailsProcedure extends IHealthProcedures {}
 
 export interface IFileInsert extends Express.Multer.File {
   procedureId: number;
@@ -64,3 +81,8 @@ export interface IAuth {
   email: string;
   password: string;
 }
+
+export type IDocumentsProcedureSave = Omit<
+  IDocumentHealth,
+  'documento_health_id'
+>;

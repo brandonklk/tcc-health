@@ -5,10 +5,10 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('files_id').primary();
     table.string('title').notNullable();
     table.string('title_storage').notNullable();
-    table.integer('procedures_id').unsigned();
-    table
-      .foreign('procedures_id')
-      .references('health_procedures.procedures_id');
+    // table.integer('procedures_id').unsigned();
+    // table
+    //   .foreign('procedures_id')
+    //   .references('health_procedures.procedures_id');
     table.timestamp('create_date').notNullable();
   });
 }

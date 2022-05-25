@@ -6,12 +6,9 @@ import { log } from '@logs/log';
 
 import { buildDateCurrent } from './DateUtils';
 
-export const insertFileAndGetIdFile = async (
-  request: Request,
-  response: Response,
-) => {
+export const insertFileAndGetIdFile = async (file: Express.Multer.File) => {
   let fileId = 0;
-  const { filename, originalname: title } = request.file as Express.Multer.File;
+  const { filename, originalname: title } = file;
 
   const create_date = buildDateCurrent();
   const safeFileName = filename;

@@ -1,5 +1,4 @@
 import { Response } from 'express';
-import NodeCache from 'node-cache';
 
 import { IEditUser, INewUser, IUsers } from '@interfaces/index';
 import { buildMessageFeedback } from '@utils/MessageFeedback';
@@ -21,8 +20,6 @@ import {
 } from '@constante/index';
 import { log } from '@logs/log';
 import { deleteCache, getCache, hasCache, saveCache } from '@modules/cache';
-
-const cacheUser = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 
 export const createUserService = async (
   valuesNewUser: INewUser,
@@ -75,7 +72,7 @@ export const createUserService = async (
   let avatarId = null;
 
   if (avatar) {
-    avatarId = await insertFileAndGetIdFile(avatar, res);
+    avatarId = await insertFileAndGetIdFile(avatar);
 
     if (avatarId === 0) {
       return res.status(500).json(
@@ -87,17 +84,26 @@ export const createUserService = async (
     }
   }
 
-  const valueUser: INewUser = {
+  const valueUser = {
     name,
     email,
     password: pwdEncrypted,
-    avatarId,
+    avatar_id: avatarId,
     phone,
     create_date,
   };
 
   try {
     const insertUserSuccess = await insertNewUser(valueUser);
+
+    if (!insertUserSuccess) {
+      return res.status(500).json(
+        buildMessageFeedback({
+          msg: 'Ocorreu um erro para criar o usuário',
+          type: 'error',
+        }),
+      );
+    }
 
     const allUser = await getAllUsers();
 
@@ -194,7 +200,7 @@ export const editUserService = async (
   let avatarId = null;
 
   if (avatar) {
-    avatarId = await insertFileAndGetIdFile(avatar, res);
+    avatarId = await insertFileAndGetIdFile(avatar);
 
     if (avatarId === 0) {
       return res.status(500).json(
@@ -211,12 +217,21 @@ export const editUserService = async (
     name,
     password: pwd,
     phone,
-    avatarId,
-    userId,
+    avatar_id: avatarId,
+    user_id: userId,
   };
 
   try {
     const resultUpdateUser = await updateUser(valuesUserInUpdate);
+
+    if (!resultUpdateUser) {
+      return res.status(500).json(
+        buildMessageFeedback({
+          msg: 'Não foi possivel salvar as informações do usuário.',
+          type: 'error',
+        }),
+      );
+    }
 
     const allUser = await getAllUsers();
 

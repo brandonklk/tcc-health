@@ -26,8 +26,6 @@ const NewUser = () => {
   const inputFile = useRef<HTMLInputElement>(null)
 
   const handleSubmitNewUser = async (valueUser: IUsers) => {
-    console.log('valueUser ', valueUser)
-
     const newValuesUser: ICreateUser = {
       name: valueUser.name,
       email: valueUser.email,
@@ -40,12 +38,6 @@ const NewUser = () => {
     const formData = new FormData()
 
     if (valueUser.avatar) {
-      newValuesUser.avatar = {
-        fileName: valueUser.avatar.name,
-        type: valueUser.avatar.type,
-        size: `${valueUser.avatar.size} bytes`,
-      }
-
       formData.append('avatar', valueUser.avatar as any)
     }
 

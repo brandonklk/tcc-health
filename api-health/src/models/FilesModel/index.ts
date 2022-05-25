@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { buildDateCurrent } from '@utils/DateUtils';
 import connection from '@db/connection';
 import { log } from '@logs/log';
+import { IDocumentsProcedureSave } from '@interfaces/index';
 
-export const insertFileAndGetIdFile = async (
-  file: Express.Multer.File,
-  response: Response,
-) => {
+const DocumentsProceduresConnection = <T>() =>
+  connection<T>('documents_health as dh');
+
+export const insertFileAndGetIdFile = async (file: Express.Multer.File) => {
   let fileId = 0;
   const { filename, originalname: title } = file;
 
@@ -31,4 +32,36 @@ export const insertFileAndGetIdFile = async (
   }
 
   return fileId;
+};
+
+export const insertDocumentProcedure = async (
+  documentsProcedures: IDocumentsProcedureSave,
+) => {
+  let success = false;
+
+  await connection.transaction(async trx => {
+    try {
+      await DocumentsProceduresConnection()
+        .transacting(trx)
+        .insert({
+          ...documentsProcedures,
+        });
+
+      await trx.commit();
+
+      success = true;
+    } catch (e) {
+      log.error(
+        e,
+        'Erro ao salvar imagens do procedimento, rollback realizado.',
+        e,
+      );
+
+      success = false;
+
+      await trx.rollback();
+    }
+  });
+
+  return success;
 };

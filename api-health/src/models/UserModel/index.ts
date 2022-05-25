@@ -1,4 +1,5 @@
 import connection from '@db/connection';
+import { log } from '@logs/log';
 import { IEditUser, INewUser, IUsers } from '@interfaces/index';
 
 const UserConnection = <T>() => connection<T>('users as u');
@@ -41,9 +42,13 @@ export const insertNewUser = async (valuesNewUser: INewUser) => {
 
       await trx.commit();
 
+      log.info('Usuário criado com sucesso!');
+
       success = true;
     } catch (error) {
       await trx.rollback();
+
+      log.error(error, 'Erro para salvar usuário');
 
       success = false;
     }
@@ -70,18 +75,23 @@ export const updateUser = async (valuesUserUpdate: IEditUser) => {
   let success = false;
 
   await connection.transaction(async trx => {
-    const { userId, avatarId, ...othersValues } = valuesUserUpdate;
+    const { user_id, ...othersValues } = valuesUserUpdate;
     try {
       await UserConnection()
         .transacting(trx)
-        .where({ 'u.user_id': userId })
-        .update({ avatar_id: avatarId, ...othersValues });
+        .where({ 'u.user_id': user_id })
+        .update({ ...othersValues });
 
       await trx.commit();
+
+      log.info('Usuário editado com sucesso!');
 
       success = true;
     } catch (error) {
       success = false;
+
+      log.info(`Erro para editar o usuario #${user_id} `, error);
+
       await trx.rollback();
     }
   });

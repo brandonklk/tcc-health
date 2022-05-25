@@ -12,7 +12,7 @@ const upload = multer(configMulter);
 
 const userRoutes = Router();
 
-userRoutes.get('/get-users', requireAuth, userController.getUsers);
+userRoutes.get('/get-users', userController.getUsers);
 
 userRoutes.post(
   '/create-user',

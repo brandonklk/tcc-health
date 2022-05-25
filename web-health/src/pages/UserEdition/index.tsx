@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useRef, useState } from 'react'
 import { AiFillEdit } from 'react-icons/ai'
 import { Formik } from 'formik'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
@@ -35,14 +35,7 @@ const UserEdition = () => {
       language: valueUser.language,
       userId: valueUser.userId,
       password: valueUser.password || null,
-    }
-
-    if (valueUser.avatar) {
-      newValuesUser.avatar = {
-        fileName: valueUser.avatar.name,
-        type: valueUser.avatar.type,
-        size: `${valueUser.avatar.size} bytes`,
-      }
+      avatarId: valueUser.avatarId || null,
     }
 
     const formData = new FormData()
@@ -90,10 +83,6 @@ const UserEdition = () => {
     setNewAvatarUser(file)
     setFieldValue('avatar', file)
   }
-
-  useEffect(() => {
-    console.log('user ', currentUser)
-  }, [])
 
   return (
     <Container className="py-4" fluid="md">
@@ -189,6 +178,7 @@ const UserEdition = () => {
                         <Form.Label>{t('email')}</Form.Label>
                         <Form.Control
                           name="email"
+                          disabled
                           placeholder={t('name')}
                           value={values.email}
                           isInvalid={!!errors.email}
@@ -255,9 +245,6 @@ const UserEdition = () => {
                             values: NumberFormatValues,
                             sourceInfo: SourceInfo
                           ) => {
-                            console.log('values ', values)
-                            console.log('sourceInfo ', sourceInfo)
-
                             if (sourceInfo && sourceInfo.event) {
                               setFieldValue(
                                 sourceInfo.event.target.name,

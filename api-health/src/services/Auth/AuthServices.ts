@@ -41,6 +41,15 @@ export const authService = async (authUser: IAuth, res: Response) => {
 
   const user = await findOneUserByMail(authUser.email);
 
+  if (!user) {
+    return res.status(500).json(
+      buildMessageFeedback({
+        msg: 'Nenhum usuário encontrato com os valores fornecidos.',
+        type: 'error',
+      }),
+    );
+  }
+
   const passwordIsNotEquals = !(await comparePwd(
     authUser.password,
     user.password,
@@ -55,15 +64,15 @@ export const authService = async (authUser: IAuth, res: Response) => {
     );
   }
 
-  const { avatarId, create_date, email, name, userId, phone, title_storage } =
+  const { avatar_id, create_date, email, name, user_id, phone, title_storage } =
     user;
 
-  const token = generateTokenOfAuthentication(userId);
+  const token = generateTokenOfAuthentication(user_id);
 
   const valuesUser = {
-    userId,
+    userId: user_id,
     phone,
-    avatarId,
+    avatarId: avatar_id,
     create_date: new Date(create_date),
     email,
     name,
@@ -71,7 +80,7 @@ export const authService = async (authUser: IAuth, res: Response) => {
     token,
   };
 
-  saveCache(buildKeyUserLoggedInForCache(userId, keyUserLoggedIn), valuesUser);
+  saveCache(buildKeyUserLoggedInForCache(user_id, keyUserLoggedIn), valuesUser);
 
   return res.status(200).json({
     msg: `Seja bem-vindo ${user.name}.`,

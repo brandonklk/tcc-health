@@ -16,6 +16,11 @@ import { insertFile, insertFileAndGetIdFile } from '@utils/FilesUtils';
 
 import { getCache, hasCache, saveCache } from '@modules/cache';
 import { generateUUId } from '@utils/Utils';
+import {
+  getAllHealthProceduresUserService,
+  getDetailsProcedureService,
+  saveHealthProcedureService,
+} from '@services/HealthProcedures/HealthProceduresServices';
 
 const upload = multer(configMulter);
 
@@ -24,21 +29,14 @@ const HealthProceduresConnection = () =>
 
 class HealthProcedures {
   async getAllHealthProceduresUser(request: Request, response: Response) {
-    const { userId: user_id } = request.params;
+    const { userId } = request.params;
 
-    const userId = Number(user_id);
+    const allProcedures = await getAllHealthProceduresUserService(
+      Number(userId),
+      response,
+    );
 
-    const procedures = await HealthProceduresConnection()
-      .select(
-        'hp.procedures_id',
-        'hp.title',
-        'hp.type_procedures',
-        'hp.description',
-      )
-      //.leftJoin('files as f', 'hp.procedures_id', 'f.procedures_id')
-      .where('hp.user_id', '=', userId);
-
-    return response.json(procedures);
+    return allProcedures;
   }
 
   async saveHealthProcedures(request: Request, response: Response) {
@@ -48,74 +46,22 @@ class HealthProcedures {
     const create_date = buildDateCurrent();
     const uuIdProcedure = generateUUId();
 
-    await connection.transaction(async trx => {
-      try {
-        await HealthProceduresConnection().transacting(trx).insert({
-          title,
-          type_procedures,
-          description,
-          user_id,
-          procedures_uuid: uuIdProcedure,
-          create_date,
-        });
+    const valuesNewProcedures: IHealthProcedures = {
+      title: title || '',
+      type_procedures: type_procedures || 0,
+      description: description || '',
+      user_id: user_id || 0,
+      create_date,
+      procedures_uuid: uuIdProcedure || '',
+      files_multer: request.files as Express.Multer.File[],
+    };
 
-        await trx.commit();
-      } catch (e) {
-        log.error(e, 'Erro ao salvar procedimento, rollback realizado.', e);
-        await trx.rollback();
+    const resultSaveProcedure = await saveHealthProcedureService(
+      valuesNewProcedures,
+      response,
+    );
 
-        return response.status(500).json(
-          buildMessageFeedback({
-            msg: 'Erro ao salvar procedimento.',
-            type: 'error',
-          }),
-        );
-      }
-    });
-
-    let resultInsertFiles = { success: null };
-
-    if (request.files && request.files.length > 0) {
-      const procedureId: Required<Pick<IHealthProcedures, 'procedures_id'>> =
-        await HealthProceduresConnection()
-          .select('hp.procedures_id')
-          .where({ 'hp.procedures_uuid': uuIdProcedure })
-          .first();
-
-      const files: Express.Multer.File[] =
-        request.files as Express.Multer.File[];
-
-      for (const file of files) {
-        const newFile: IFileInsert = {
-          ...file,
-          procedureId: procedureId.procedures_id,
-        };
-
-        const { success } = await insertFile(newFile);
-
-        resultInsertFiles.success = success;
-
-        if (!success) {
-          break;
-        }
-      }
-    }
-
-    if (resultInsertFiles.success === false) {
-      return response.status(500).json(
-        buildMessageFeedback({
-          msg: 'Erro ao salvar imagem do procedimento.',
-          type: 'error',
-        }),
-      );
-    } else {
-      return response.json(
-        buildMessageFeedback({
-          msg: 'Procedimento salvo com sucesso.',
-          type: 'success',
-        }),
-      );
-    }
+    return resultSaveProcedure;
   }
 
   async deleteHealthProcedures(request: Request, response: Response) {
@@ -155,52 +101,59 @@ class HealthProcedures {
   async getDetailsProcedure(request: Request, response: Response) {
     const { procedureId } = request.params;
 
-    let details: any[] = [];
-
-    const detailsProcedure = await HealthProceduresConnection()
-      .select(
-        'hp.procedures_id',
-        'hp.title as title_procedure',
-        'hp.type_procedures',
-        'hp.description',
-        'f.files_id',
-        'f.title as file_title',
-        'f.title_storage',
-      )
-      .leftJoin('files as f', 'hp.procedures_id', 'f.procedures_id')
-      .where({ 'hp.procedures_id': procedureId });
-
-    detailsProcedure.forEach(
-      ({
-        file_title,
-        title_storage,
-        files_id,
-        procedures_id,
-        ...otherValues
-      }) => {
-        const procedureExist = details.findIndex(
-          ({ procedures_id: procedureId }) => {
-            return procedureId === procedures_id;
-          },
-        );
-
-        if (procedureExist !== -1) {
-          details[procedureExist].files.push({
-            file_title,
-            title_storage,
-            files_id,
-          });
-        } else {
-          details.push({
-            ...otherValues,
-            procedures_id,
-            files: files_id ? [{ file_title, title_storage, files_id }] : [],
-          });
-        }
-      },
+    const procedureDetails = await getDetailsProcedureService(
+      Number(procedureId),
+      response,
     );
 
-    return response.json(details[0]);
+    return procedureDetails;
+
+    // let details: any[] = [];
+
+    // const detailsProcedure = await HealthProceduresConnection()
+    //   .select(
+    //     'hp.procedures_id',
+    //     'hp.title as title_procedure',
+    //     'hp.type_procedures',
+    //     'hp.description',
+    //     'f.files_id',
+    //     'f.title as file_title',
+    //     'f.title_storage',
+    //   )
+    //   .leftJoin('files as f', 'hp.procedures_id', 'f.procedures_id')
+    //   .where({ 'hp.procedures_id': procedureId });
+
+    // detailsProcedure.forEach(
+    //   ({
+    //     file_title,
+    //     title_storage,
+    //     files_id,
+    //     procedures_id,
+    //     ...otherValues
+    //   }) => {
+    //     const procedureExist = details.findIndex(
+    //       ({ procedures_id: procedureId }) => {
+    //         return procedureId === procedures_id;
+    //       },
+    //     );
+
+    //     if (procedureExist !== -1) {
+    //       details[procedureExist].files.push({
+    //         file_title,
+    //         title_storage,
+    //         files_id,
+    //       });
+    //     } else {
+    //       details.push({
+    //         ...otherValues,
+    //         procedures_id,
+    //         files: files_id ? [{ file_title, title_storage, files_id }] : [],
+    //       });
+    //     }
+    //   },
+    // );
+
+    // return response.json(details[0]);
   }
 
   async editHealthProcedures(request: Request, response: Response) {
@@ -210,7 +163,7 @@ class HealthProcedures {
       let file_id = null;
 
       if (request.file) {
-        file_id = await insertFileAndGetIdFile(request, response);
+        file_id = await insertFileAndGetIdFile(request.file);
 
         if (file_id === 0) {
           return response.status(500).json(
