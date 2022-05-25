@@ -1,11 +1,12 @@
+import { IDetailsProcedure } from '@interfaces/index';
 import { v4 as UUid } from 'uuid';
 
 export const generateUUId = () => {
   return UUid();
 };
 
-export const buildValuesProcedure = (valuesProcedure: any[]) => {
-  const details: any[] = [];
+export const buildValuesProcedure = (valuesProcedure: IDetailsProcedure[]) => {
+  const details: IDetailsProcedure[] = [];
 
   if (valuesProcedure && valuesProcedure.length > 0) {
     valuesProcedure.forEach(

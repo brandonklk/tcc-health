@@ -5,21 +5,37 @@ const saltRounds = Math.floor(Math.random() * 12);
 const SIX_HOURS = 21600000;
 
 export const encryptedPwd = async (pwd: string) => {
-  return await hash(pwd, saltRounds);
+  if (pwd) {
+    pwd = await hash(pwd, saltRounds);
+  }
+
+  return pwd;
 };
 
 export const comparePwd = async (
   passwordUser: string,
   passwordRequest: string,
 ) => {
-  return await compare(passwordUser, passwordRequest);
+  let passwordIsEquals = false;
+
+  if (passwordUser && passwordRequest) {
+    passwordIsEquals = await compare(passwordUser, passwordRequest);
+  }
+
+  return passwordIsEquals;
 };
 
 export const buildKeyUserLoggedInForCache = (
   userId: number,
   keyCache: string,
 ) => {
-  return `${keyCache}-${userId}`;
+  let keyUser = '';
+
+  if (userId && keyCache) {
+    keyUser = `${keyCache}-${userId}`;
+  }
+
+  return keyUser;
 };
 
 export const generateTokenOfAuthentication = (userId: number) => {

@@ -3,9 +3,13 @@ import { IUsers } from '@interfaces/index';
 import { getCache } from '@modules/cache';
 
 export const emailUserExist = (user: IUsers[], emailRequest: string) => {
-  const emailExist = user.some(({ email: mail }: IUsers) => {
-    return mail === emailRequest;
-  });
+  let emailExist = false;
+
+  if (emailRequest) {
+    emailExist = user.some(({ email: mail }: IUsers) => {
+      return mail === emailRequest;
+    });
+  }
 
   return emailExist;
 };

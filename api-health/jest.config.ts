@@ -81,7 +81,19 @@ export default {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '@controllers/(.*)': ['../../../src/controllers/$1'],
+    '@logs/(.*)': ['../../src/logger/$1'],
+    '@db/(.*)': ['../../src/database/$1'],
+    '@utils/(.*)': ['../../src/utils/$1'],
+    '@config/(.*)': ['../../src/config/$1'],
+    '@interfaces/(.*)': ['../../src/interfaces/$1'],
+    '@modules/(.*)': ['../../src/modules/$1'],
+    '@middleware/(.*)': ['../../src/middleware/$1'],
+    '@services/(.*)': ['../../src/services/$1'],
+    '@models/(.*)': ['../../src/models/$1'],
+    '@constante/(.*)': ['../../src/constants/$1'],
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -114,7 +126,7 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: 'tests',
+  rootDir: './tests',
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [

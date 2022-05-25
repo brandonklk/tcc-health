@@ -12,7 +12,6 @@ import { configMulter } from '@config/multerConfig';
 import { log } from '@logs/log';
 
 import { buildDateCurrent } from '@utils/DateUtils';
-import { insertFile, insertFileAndGetIdFile } from '@utils/FilesUtils';
 
 import { getCache, hasCache, saveCache } from '@modules/cache';
 import { generateUUId } from '@utils/Utils';
@@ -21,6 +20,7 @@ import {
   getDetailsProcedureService,
   saveHealthProcedureService,
 } from '@services/HealthProcedures/HealthProceduresServices';
+import { insertFileAndGetIdFile } from '@models/FilesModel';
 
 const upload = multer(configMulter);
 

@@ -71,7 +71,22 @@ export interface IHealthProcedures extends Partial<IFiles> {
   create_date?: Date;
 }
 
-export interface IDetailsProcedure extends IHealthProcedures {}
+type IFilesDetailsProcedure = {
+  file_title: string;
+  title_storage: string;
+  files_id: number;
+};
+
+export interface IDetailsProcedure {
+  procedures_id: number;
+  title_procedure: string;
+  type_procedures: number;
+  description: string;
+  files?: IFilesDetailsProcedure[];
+  files_id?: number | null;
+  file_title?: string | null;
+  title_storage?: string | null;
+}
 
 export interface IFileInsert extends Express.Multer.File {
   procedureId: number;

@@ -1,3 +1,9 @@
 export const valueDotEnvIsBoolean = (value: string) => {
-    return value && value.toLowerCase() === "true";
-}
+  let valueIsBoolean = false;
+
+  if (value) {
+    valueIsBoolean = value && value.toLowerCase() === 'true';
+  }
+
+  return valueIsBoolean;
+};

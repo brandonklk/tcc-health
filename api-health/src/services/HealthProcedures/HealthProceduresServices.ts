@@ -1,11 +1,13 @@
 import { Response } from 'express';
-import multer from 'multer';
 
-import { IHealthProcedures, IDocumentsProcedureSave } from '@interfaces/index';
+import {
+  IHealthProcedures,
+  IDocumentsProcedureSave,
+  IDetailsProcedure,
+} from '@interfaces/index';
 
 import { buildMessageFeedback } from '@utils/MessageFeedback';
 
-import { configMulter } from '@config/multerConfig';
 import { log } from '@logs/log';
 
 import { buildDateCurrent } from '@utils/DateUtils';
@@ -21,8 +23,6 @@ import {
   insertFileAndGetIdFile,
 } from '@models/FilesModel';
 import { buildValuesProcedure } from '@utils/Utils';
-
-const upload = multer(configMulter);
 
 export const getAllHealthProceduresUserService = async (
   userId: number,
@@ -225,7 +225,14 @@ export const getDetailsProcedureService = async (
 
     const [newValuesProcedure] = buildValuesProcedure(detailsProcedure);
 
-    return res.json(newValuesProcedure);
+    let procedureDetails = newValuesProcedure;
+
+    if (!procedureDetails) {
+      log.info(`nenhum procedimento encontrado para o id #${procedureId}`);
+      procedureDetails = {} as IDetailsProcedure;
+    }
+
+    return res.json(procedureDetails);
   } catch (error) {
     return res.status(500).json(
       buildMessageFeedback({

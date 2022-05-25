@@ -1,6 +1,6 @@
 import connection from '@db/connection';
 
-import { IHealthProcedures } from '@interfaces/index';
+import { IDetailsProcedure, IHealthProcedures } from '@interfaces/index';
 import { log } from '@logs/log';
 
 const HealthProceduresConnection = <T>() =>
@@ -64,9 +64,9 @@ export const getProcedureUser = async <T>(
 export const getDetailsProcedureUser = async (
   procedureId: number,
   columns: string[],
-) => {
-  const procedure = await HealthProceduresConnection()
-    .select(columns)
+): Promise<IDetailsProcedure[]> => {
+  const procedure = await HealthProceduresConnection<IDetailsProcedure[]>()
+    .select(...columns)
     .leftJoin('documents_health as dh', 'hp.procedures_id', 'dh.procedures_id')
     .leftJoin('files as f', 'dh.files_id', 'f.files_id')
     .where({ 'hp.procedures_id': procedureId });
