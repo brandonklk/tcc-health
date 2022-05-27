@@ -14,7 +14,7 @@ if (valueDotEnvIsBoolean(process.env.DEBUG_REQUEST)) {
 }
 
 app.use(cors());
-app.use('/files', express.static('files'));
+app.use('/files', express.static(process.env.LOCAL_FILES));
 /**
  * app.use([
  *  ensureAuthenticated,
