@@ -64,6 +64,12 @@ const Documents = () => {
   const [showModalNewFolder, setShowModalNewFolder] = useState(false)
   const [showModalNewFile, setShowModalNewFile] = useState(false)
 
+  const allProcedures = useCallback(async (userId: number) => {
+    const procedures = await getProceduresUser(userId)
+
+    return procedures
+  }, [])
+
   const getDocuments = async (userId: number) => {
     setIsLoading(true)
     initialValuesFile.user_id = currentUser.userId
@@ -73,7 +79,7 @@ const Documents = () => {
       procedures,
       feedback: { msg, type },
       error,
-    } = await getProceduresUser(userId)
+    } = await allProcedures(userId)
 
     allDocuments = procedures
 
@@ -183,9 +189,6 @@ const Documents = () => {
 
   useEffect(() => {
     if (currentUser && Object.keys(currentUser).length > 0) {
-      console.log('currentUser 1', currentUser)
-
-      console.log('currentUser 2', initialValuesFile)
       getDocuments(currentUser.userId)
     }
   }, [])
