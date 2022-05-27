@@ -27,7 +27,7 @@ app.use(routes);
 
 app.use(errors());
 
-const PORT = process.env.PORT_BACKEND || 3333;
+const PORT = process.env.PORT || 3333;
 
 app.listen(PORT, () => log.info(`Server running port ${PORT}`));
 
