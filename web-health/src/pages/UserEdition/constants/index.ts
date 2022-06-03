@@ -19,8 +19,8 @@ export const validationSchemaUser = object({
   password: string()
     .trim()
     .required('required')
-    .max(15, 'phone_digit_incorrect_2')
-    .min(8, 'phone_digit_incorrect_3'),
+    .max(15, 'password_digit_max_incorrect')
+    .min(8, 'password_digit_min_incorrect'),
   name: string().trim().required('required'),
   confirmPassword: string()
     .trim()

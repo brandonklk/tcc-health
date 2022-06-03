@@ -153,7 +153,7 @@ export const editUserService = async (
   valuesEditUser: IEditUser,
   res: Response,
 ) => {
-  const { email, name, password, phone, avatar, userId } = valuesEditUser;
+  const { email, name, password, phone, avatar, userId, avatarId: photoUser } = valuesEditUser;
 
   if (!email) {
     return res.status(500).json(
@@ -197,7 +197,7 @@ export const editUserService = async (
     pwd = await encryptedPwd(password);
   }
 
-  let avatarId = null;
+  let avatarId = photoUser;
 
   if (avatar) {
     avatarId = await insertFileAndGetIdFile(avatar);

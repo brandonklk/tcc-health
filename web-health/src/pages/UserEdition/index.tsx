@@ -78,7 +78,6 @@ const UserEdition = () => {
     ) => void
   ) => {
     const [file] = (event.target.files || []) as FileList
-    console.log('file ', file)
 
     setNewAvatarUser(file)
     setFieldValue('avatar', file)

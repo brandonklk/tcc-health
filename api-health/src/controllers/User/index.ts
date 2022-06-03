@@ -32,7 +32,7 @@ class UserController {
   }
 
   async editUser(request: Request, response: Response) {
-    const { userId, name, email, password, phone } = request.body;
+    const { userId, name, email, password, phone, avatarId } = request.body;
 
     const valueUserInEdition: IEditUser = {
       userId,
@@ -40,6 +40,7 @@ class UserController {
       email,
       password,
       phone,
+      avatarId,
       avatar: request.file,
     };
 

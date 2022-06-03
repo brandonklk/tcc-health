@@ -48,5 +48,7 @@
   "description": "Descrição",
   "max_lenght_phrase": "O limite de caracteres é de 255",
   "create_new_user": "Criar novo usuário",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+  "password_digit_max_incorrect": "A quantidade máxima permitida é de 15 digitos",
+  "password_digit_min_incorrect": "A quantidade mínima permitida é de 8 digitos"
 }
