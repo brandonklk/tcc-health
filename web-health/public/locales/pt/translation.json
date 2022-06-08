@@ -40,6 +40,8 @@
   "prescription": "Prescrição",
   "surgery": "Cirurgia(s)",
   "vaccines": "Vacina(s)",
+  "physiotherapy": "Fisioterapia",
+  "psychology": "Psicologia",
   "type_undefined": "Nenhum tipo definido para este documento",
   "view_details": "Visualizar detalhes do documento",
   "new_file": "Novo documento",
@@ -50,5 +52,14 @@
   "create_new_user": "Criar novo usuário",
   "confirm": "Confirmar",
   "password_digit_max_incorrect": "A quantidade máxima permitida é de 15 digitos",
-  "password_digit_min_incorrect": "A quantidade mínima permitida é de 8 digitos"
+  "password_digit_min_incorrect": "A quantidade mínima permitida é de 8 digitos",
+  "extension_file_incorrect": "A extenção do arquivo não é valido, forneça um arquivo do tipo PNG, JPEG ou PDF.",
+  "size_file_incorrect": "O tamanho total do arquivo(s) deve ser no máximo de 4MB",
+  "placeholder_name_user": "José da Silva",
+  "placeholder_email_user": "exemplo@dominio.com",
+  "placeholder_password_user": "É aceito letras, números e caracteres especiais",
+  "placeholder_confirm_password_user": "Deve ser igual a senha fornecida",
+  "placeholder_phone_user": "(##) #####-####",
+  "title_details_procedure": "Detalhes do procedimento #{{procedureId}}",
+  "files_not_found_procedure": "Nenhum documento vinculado ao procedimento"
 }

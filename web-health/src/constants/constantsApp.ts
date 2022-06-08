@@ -10,6 +10,9 @@ import { array, number, object, string } from 'yup'
 export const userLocalStorage = '@user'
 export const tokenAuth = '@token'
 
+export const fourMB = 4 * 1024 * 1024
+export const extensionFilesAccepted = ['image/jpeg', 'image/png', 'application/pdf']
+
 export const initialValuesUser: IUsers = {
   userId: 0,
   name: '',

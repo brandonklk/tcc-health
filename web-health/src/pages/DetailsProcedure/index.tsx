@@ -70,6 +70,10 @@ const DetailsProcedure = () => {
         return 'surgery'
       case ETypeProcedures.VACCINES:
         return 'vaccines'
+      case ETypeProcedures.PHYSIOTHERAPY:
+          return 'physiotherapy'
+      case ETypeProcedures.PSYCHOLOGY:
+          return 'psychology'
       default:
         return 'type_undefined'
     }
@@ -83,7 +87,11 @@ const DetailsProcedure = () => {
     <Container fluid="sm" className="py-5">
       <Row className="mb-5">
         <Col>
-          <h3>Detalhes do procedimento #{procedureId}</h3>
+          <h3>
+            {t('title_details_procedure', {
+                procedureId: procedureId
+            })}
+          </h3>
         </Col>
       </Row>
       <Row>
@@ -157,7 +165,7 @@ const DetailsProcedure = () => {
                 ) : (
                   <Col>
                     <h6 className="mb-0 mt-3">
-                      Nenhum documento vinculado ao procedimento
+                      {t('files_not_found_procedure')}
                     </h6>
                   </Col>
                 )}

@@ -6,6 +6,8 @@ export enum ETypeProcedures {
   VACCINES,
   PRESCRIPTION,
   CONTINUOUS_REMEDY,
+  PHYSIOTHERAPY,
+  PSYCHOLOGY,
 }
 
 export interface IDocumentFolder {

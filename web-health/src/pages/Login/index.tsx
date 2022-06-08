@@ -77,7 +77,6 @@ const Login = () => {
                         <Form.Label>{t('email')}</Form.Label>
                         <Form.Control
                           name="email"
-                          placeholder={t('email')}
                           value={values.email}
                           isInvalid={!!errors.email}
                           onChange={handleChange}
@@ -94,7 +93,6 @@ const Login = () => {
                         <Form.Control
                           name="password"
                           type="password"
-                          placeholder={t('password')}
                           value={values.password}
                           onChange={handleChange}
                           isInvalid={!!errors.password}

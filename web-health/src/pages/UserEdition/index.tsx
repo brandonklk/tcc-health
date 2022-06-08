@@ -161,7 +161,7 @@ const UserEdition = () => {
                         <Form.Label>{t('name')}</Form.Label>
                         <Form.Control
                           name="name"
-                          placeholder={t('name')}
+                          placeholder={t('placeholder_name_user')}
                           value={values.name}
                           isInvalid={!!errors.name}
                           onChange={handleChange}
@@ -178,7 +178,7 @@ const UserEdition = () => {
                         <Form.Control
                           name="email"
                           disabled
-                          placeholder={t('name')}
+                          placeholder={t('placeholder_email_user')}
                           value={values.email}
                           isInvalid={!!errors.email}
                           onChange={handleChange}
@@ -197,7 +197,7 @@ const UserEdition = () => {
                         <Form.Control
                           name="password"
                           type="password"
-                          placeholder={t('password')}
+                          placeholder={t('placeholder_password_user')}
                           value={values.password}
                           isInvalid={!!errors.password}
                           onChange={handleChange}
@@ -214,7 +214,7 @@ const UserEdition = () => {
                         <Form.Control
                           name="confirmPassword"
                           type="password"
-                          placeholder={t('confirmPassword')}
+                          placeholder={t('placeholder_confirm_password_user')}
                           value={values.confirmPassword}
                           isInvalid={!!errors.confirmPassword}
                           onChange={handleChange}
@@ -237,7 +237,7 @@ const UserEdition = () => {
                           type="tel"
                           format="(##) #####-####"
                           name="phone"
-                          placeholder={t('phone')}
+                          placeholder={t('placeholder_phone_user')}
                           value={values.phone || undefined}
                           isInvalid={!!errors.phone}
                           onValueChange={(
