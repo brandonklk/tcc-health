@@ -24,8 +24,8 @@ export const validationSchemaUser = object({
     .max(15, 'password_digit_max_incorrect')
     .min(8, 'password_digit_min_incorrect'),
   name: string().trim().required('required'),
-  avatar: mixed().test('test-size-files-user', 'size_file_incorrect', (imageUser: FileList) => {
-    const [image] = imageUser
+  avatar: mixed().test('test-size-files-user', 'size_file_incorrect', (imageUser: File) => {
+    const image = imageUser
     let fileSizeAccepted = true
 
     if (image && Object.keys(image).length > 0) {
@@ -33,8 +33,8 @@ export const validationSchemaUser = object({
     }
 
     return fileSizeAccepted
-  }).test('test-extension-file-user', 'extension_file_incorrect', (imageUser: FileList) => {
-    const [image] = imageUser
+  }).test('test-extension-file-user', 'extension_file_incorrect', (imageUser: File) => {
+    const image = imageUser
     let fileExtensionAccepted = true
 
     if (image && Object.keys(image).length > 0) {

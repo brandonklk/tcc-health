@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef } from 'react'
 import { AiFillEdit } from 'react-icons/ai'
-import { Formik } from 'formik'
+import { Formik, ErrorMessage } from 'formik'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { NumberFormatValues, SourceInfo } from 'react-number-format'
@@ -124,6 +124,7 @@ const NewUser = () => {
                           <Button onClick={handleUpload}>
                             <AiFillEdit size={20} />
                           </Button>
+                          <ErrorMessage name="avatar" />
                         </Col>
                       </Row>
                     </Col>

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from 'react'
 import { AiFillEdit } from 'react-icons/ai'
-import { Formik } from 'formik'
+import { Formik, ErrorMessage } from 'formik'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { format, parseISO } from 'date-fns'
@@ -131,6 +131,7 @@ const UserEdition = () => {
                           <Button onClick={handleUpload}>
                             <AiFillEdit size={20} />
                           </Button>
+                          <ErrorMessage name="avatar" />
                         </Col>
                       </Row>
                     </Col>

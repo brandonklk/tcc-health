@@ -19,8 +19,8 @@ export const validationSchemaUserEdit = object({
   email: string().email('invalid_email').trim().required('required'),
   password: string(),
   name: string().trim().required('required'),
-  avatar: mixed().test('test-size-files-user', 'size_file_incorrect', (imageUser: FileList) => {
-    const [image] = imageUser
+  avatar: mixed().test('test-size-files-user', 'size_file_incorrect', (imageUser: File) => {
+    const image = imageUser || {}
     let fileSizeAccepted = true
 
     if (image && Object.keys(image).length > 0) {
@@ -28,8 +28,8 @@ export const validationSchemaUserEdit = object({
     }
 
     return fileSizeAccepted
-  }).test('test-extension-file-user', 'extension_file_incorrect', (imageUser: FileList) => {
-    const [image] = imageUser
+  }).test('test-extension-file-user', 'extension_file_incorrect', (imageUser: File) => {
+    const image = imageUser || {}
     let fileExtensionAccepted = true
 
     if (image && Object.keys(image).length > 0) {
