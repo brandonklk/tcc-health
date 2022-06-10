@@ -4,20 +4,20 @@ import { Formik } from 'formik'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { NumberFormatValues, SourceInfo } from 'react-number-format'
+import { useNavigate } from 'react-router-dom'
 
 // import Select from 'components/Select'
 import MaskField from 'components/MaskField'
 import PreviewImage from 'components/PreviewImage'
+import { FileInput } from 'pages/UserEdition/styled'
 
 import { ICreateUser, IUsers } from 'interfaces/pages/Login'
 
 import { initialValuesUser } from 'constants/constantsApp'
-import { validationSchemaUser } from 'pages/UserEdition/constants'
-import { FileInput } from 'pages/UserEdition/styled'
+import { validationSchemaUser } from './constants'
 // import { rolesNewUser } from './constants'
 import { createUser } from 'services/UserService'
 import { useToasterFeedback } from 'hooks/useToaster'
-import { useNavigate } from 'react-router-dom'
 
 const NewUser = () => {
   const { t } = useTranslation()
