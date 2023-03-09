@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Formik } from 'formik'
@@ -27,8 +27,15 @@ import {
 } from 'utils'
 
 const Login = () => {
+  const [isCompleted, setIsCompleted] = useState(false)
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isCompleted) {
+      navigate('/documents')
+    }
+  }, [isCompleted])
 
   const handleSubmitLogin = async (valueLogin: ILogin) => {
     const {
@@ -43,7 +50,7 @@ const Login = () => {
       const { token, ...rest } = user
       setTokenAuthorized(token || '')
       setValuesUserLocalStorage(rest)
-      navigate('/documents')
+      setIsCompleted(true)
     }
 
     useToasterFeedback({ msg, type })

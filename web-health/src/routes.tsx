@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-// import { AppProvider } from 'contexts/AppContext'
-
 import ProtectedRouters from 'components/ProtectedRouters'
 
 import routes from 'routes/routes'
@@ -11,8 +9,6 @@ const RouterApp = () => {
   return (
     <Routes>
       {routes.map(route => {
-        console.log('route.isPrivate ', route.isPrivate)
-
         return route.isPrivate ? (
           <Route
             key={route.keyRoute}

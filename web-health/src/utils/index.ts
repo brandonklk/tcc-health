@@ -41,9 +41,6 @@ export const getTokenAuthorized = () => {
   let token = ''
   const tokenUser = localStorage.getItem(tokenAuth)
 
-  console.log('tokenUser ', tokenUser)
-  console.log('tokenUser ', typeof tokenUser)
-
   if (tokenUser) {
     token = tokenUser
   }
